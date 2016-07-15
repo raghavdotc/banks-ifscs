@@ -43,6 +43,8 @@ app.controller("BankController", function ($scope, $http) {
 
     this.setBankTitle = function () {
         this.bank_title = $("select option:selected").text().trim();
+        this.city = "";
+        this.cityBranches = [];
     };
 
     this.ajaxSuggestions = function (encodedBank, encodedCity) {
