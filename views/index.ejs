@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html ng-app="banks">
+<head>
+    <title><%= title %></title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.js"
+            integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="/javascripts/app.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="col-md-12">
+        <h3>Welcome to <%= title %></h3>
+    </div>
+    <form id="banksForm" ng-controller="BankController as bankCtrl">
+        <div class="col-md-6">
+
+            <div class="form-group">
+                <select ng-change="bankCtrl.setBankTitle()" placeholder="Select a Bank" ng-model="bankCtrl.bank"
+                        name="banks" id="banks-list"
+                        class="form-control">
+                    <option value=""> - Select bank -</option>
+                    <% if(banks != undefined) { %>
+                    <% for(var i = 0; i < banks.length; i++) { %>
+                    <option value="<%= banks[i].bank_id %>">
+                        <%= banks[i].bank_title %>
+                    </option>
+                    <% } %>
+                    <% } %>
+                </select>
+                <input type="hidden" ng-model="bankCtrl.bank_title">
+            </div>
+            <div class="form-group">
+                <input ng-keyup="bankCtrl.suggestCities($event)" type="text"
+                       ng-model="bankCtrl.city"
+                       name="city" id="city" class="form-control" placeholder="Enter a city">
+            </div>
+
+            <div class="form-group" ng-show="bankCtrl.suggestionsAreOn()">
+                <h4 style="display: inline-block; padding-left: 10px;">Suggestions</h4> &nbsp;&nbsp;&nbsp;
+                <span class="text-muted">Click to select one of the suggestions!</span>
+                <ul id="suggestions">
+                    <li ng-repeat="cityOption in bankCtrl.cityOptions">
+                        <a ng-click="bankCtrl.selectCity(cityOption)" ng-model="cityOption">
+                            {{ cityOption }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div ng-repeat="branch in bankCtrl.cityBranches"
+                 class="col-md-12 branch-item">
+                <div class="row">
+                    <label class="col-md-3" for="">IFSC : </label> <span
+                            class="text-info col-md-9">{{ branch.ifsc }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-md-3" for="">BANK : </label> <span
+                            class="text-info col-md-9">{{ branch.bank }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-md-3" for="">BRANCH : </label> <span class="text-info col-md-9">{{ branch.branch }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-md-3" for="">CITY : </label> <span
+                            class="text-info col-md-9">{{ branch.city }}</span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
